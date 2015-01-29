@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xmi:id="_JfYq4H1rEeSs57dqaorOKQ" version="8.1.1">
+  <models xmi:type="application:Application" href=".metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi#_9kOJMZdwEeS_3IYOVclWEA"/>
+</viewpoint:DAnalysis>
