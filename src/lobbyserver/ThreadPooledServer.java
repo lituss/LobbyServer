@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class ThreadPooledServer implements Runnable{
 
-    protected int          serverPort   = 8080;
+    protected int          serverPort   ;//= 8080;
     protected ServerSocket serverSocket = null;
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;

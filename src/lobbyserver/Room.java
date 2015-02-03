@@ -5,6 +5,9 @@ import message.EnumTipusSales;
 public class Room {
 	public String nom;
 	EnumTipusSales tipusSala;
+	int maxJugadors;
+	int numJugadors = 0;
+	
 	public String getNom() {
 		return nom;
 	}
@@ -35,8 +38,7 @@ public class Room {
 	public void setJugadors(BlockingQueue<Player> jugadors) {
 		this.jugadors = jugadors;
 	}
-	int maxJugadors;
-	int numJugadors = 0;
+	
 	
 	transient BlockingQueue <Player> jugadors = new LinkedBlockingQueue <Player>();
 	

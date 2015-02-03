@@ -10,6 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.*;
 
+import message.CSlobbyChat;
+import message.Classes;
+import message.EnumEstats;
 import message.EnumJoin;
 import message.SClobbyPlayers;
 import message.SClogged;
@@ -24,6 +27,8 @@ public class Player {
 	Thread threadPlayerEmisor;
 	public PlayerReceptor playerReceptor;
 	public Thread threadPlayerReceptor;
+	private ObjectOutputStream objectOutput;
+	private ObjectInputStream objectInput;
 	Lobby lobby;
 	static Lock bloqueja;
 	long token;
@@ -37,11 +42,32 @@ public class Player {
 		this.alias = alias;
 		this.playerEmisor = new PlayerEmisor(objectOutput, this);
 		this.playerReceptor = new PlayerReceptor(objectInput,this);
+		threadPlayerEmisor = new Thread(playerEmisor);
+		threadPlayerReceptor = new Thread(playerReceptor);
+		threadPlayerEmisor.start();
+		threadPlayerReceptor.start();
 		this.lobby = lobby;
+		this.objectInput = objectInput;
+		this.objectOutput = objectOutput;
 		setEstat(EnumEstats.LOGIN);
+		enviaLogin();
+		lobby.addPlayer(this);
+		setEstat(EnumEstats.LOBBY);
+		
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void enviaLogin(){
 		token = generaToken();
+		tokens.put(token, this);
 		SClogged sclogged = new SClogged();
-		sclogged.login = EnumJoin.OK.ordinal();
+		sclogged.login = EnumJoin.OK;
 		sclogged.token = token;
 		SCrooms scrooms = new SCrooms();
 		//Room auxRoom;
@@ -66,10 +92,13 @@ public class Player {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
+	
 	synchronized void tractaMissatge(Object missatge){
+		switch (((Classes)missatge)){
+		case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
+		break;
+		}
 		
 	}
 	public Room getRoom() {
@@ -104,4 +133,5 @@ public class Player {
     	return valor;
     
 		}
+	
 }

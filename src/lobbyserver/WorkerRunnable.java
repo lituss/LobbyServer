@@ -35,8 +35,8 @@ import message.*;
 	            objectInput = new ObjectInputStream(input);
 	            output = clientSocket.getOutputStream();
 	            objectOutput = new ObjectOutputStream(output);
-	            estatInicial();
-	            
+	            //estatInicial();
+	            dispatcher();
 	            /*long time = System.currentTimeMillis();
 	            /output.write(("HTTP/1.1 200 OK\n\nWorkerRunnable: " +
 	                    this.serverText + " - " +
@@ -46,14 +46,27 @@ import message.*;
 	            input.close();
 	            System.out.println("Request processed: " + time);
 	            */
-	        } catch (IOException e) {
+	        } catch (IOException | ClassNotFoundException e) {
 	            //report exception somewhere.
 	            e.printStackTrace();
 	        }
 	    }
 	    
-	    void estatInicial()	{
+	    void dispatcher() throws ClassNotFoundException, IOException{
+	    	Object aux;
+	    	while (active){
+	    		aux = objectInput.readObject();
+	    		switch (((Classes) aux)){
+	    			case  CSlogin : onLogin((CSlogin)aux);
+	    				break;
+	    				
+	    		}
+	    	}
+	    }
+	    
+	 /*   void estatInicial()	{
 	    	try {
+	    		while 
 				Object aux = objectInput.readObject();
 	    	
 				if (aux instanceof CSlogin) { onLogin((CSlogin)aux);}
@@ -64,16 +77,19 @@ import message.*;
 				// TODO: handle exception
 			}
 	    }
+	   */ 
 		void onLogin (CSlogin cslogin)
 		{
 			SClogged sclogged = new SClogged();
 		//	Player player;
 			
-			if (lobby.sql.login(cslogin.user, cslogin.pass))
+			if (lobby.sql.login(cslogin.user, cslogin.pass)){
 				new Player(cslogin.user,objectInput,objectOutput,lobby);
+				estatFinal();
+			}
 			else {
-				if (lobby.sql.existeixUsuari(cslogin.user)) sclogged.login = EnumJoin.KO_BAD_PASS.ordinal();
-				else sclogged.login = EnumJoin.KO_BAD_USER.ordinal();
+				if (lobby.sql.existeixUsuari(cslogin.user)) sclogged.login = EnumJoin.KO_BAD_PASS;
+				else sclogged.login = EnumJoin.KO_BAD_USER;
 			
 				try {
 					objectOutput.writeObject(sclogged);
@@ -88,6 +104,7 @@ import message.*;
 	    void onJoin( CSsign csjoin)
 	    {
 	    	SCsigned scjoined = new SCsigned();
+	    	System.out.println("Rebut CSsign amb parametres : "+csjoin.user+" , "+csjoin.pass);
 	    	if (lobby.sql.join(csjoin.user, csjoin.pass)) {
 	    		
 	    		CSlogin cslogin = new CSlogin();
@@ -120,6 +137,7 @@ import message.*;
 	    	objectInput.close();
 	    	input.close();
 	    	clientSocket.close();
+	    	active = false;
 	    	} catch (IOException e) {e.printStackTrace();}
 	    }
 	    

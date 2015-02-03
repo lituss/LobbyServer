@@ -17,7 +17,7 @@ public class Server {
 		//Console console = System.console();
 		//console.printf("Server online, listening on port %i ...",port);
 		//console.flush();
-		System.out.println("Server online on port : "+port);
+		System.out.println("New Server online on port : "+port);
 		System.out.flush();
 		try {
 		    Thread.sleep(2000 * 1000);

@@ -1,9 +1,10 @@
 package message;
 
-public enum Classes { CSlogin (1) , CSconnect (2), CSsign (3), CSlogged (4), CSsigned (5), Rooms (6) , LobbyPlayers (7) ;
+public enum Classes { CSlogin (1) , CSconnect (2), CSsign (3), SClogged (4), CSsigned (5), SCrooms (6) , SClobbyPlayers (7) ,
+	CSlobbyChat (8) , SClobbyChat (9);
 
 	int classe;
 	Classes(int p){classe = p;}
-	int showClasse(){return classe;}
+	public int showClasse(){return classe;}
 	
 }

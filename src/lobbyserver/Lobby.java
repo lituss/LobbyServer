@@ -7,7 +7,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+import message.EnumEstats;
 import message.EnumTipusSales;
+import message.SClobbyChat;
 
 
 
@@ -29,13 +31,15 @@ public class Lobby {
 	
 			bloqueja.lock();
 			players.add(player);
-			notificaNewPlayer(player);
 			bloqueja.unlock();
+			notificaNewPlayer(player);
+			
 	}
 	public synchronized void removePlayer(Player player){
 		bloqueja.lock();
 		players.remove(player);
 		bloqueja.unlock();
+		notificaRemovedPlayer(player);
 	}
 	public synchronized void PlayerToRoom(){
 		
@@ -64,10 +68,26 @@ public class Lobby {
 	void notificaNewPlayer(Player player)
 	// enviem a tots que s'ha incorporat un nou jugador
 	{
+		String string = player.alias+" acaba de entrar :)";
+		broadChat(string);
 		
 	}
 	void notificaRemovedPlayer(Player player){
 		// notifiquem a tots que el jugador a marxat
+		String string = player.alias + "Ha marxat :(";
+		broadChat(string);
+	}
+    public synchronized void broadChat(String texte){
+    	// enviem missatge a tots els players que estan al lobby
+    	bloqueja.lock();
+    	for (Player player : players){
+    		if (player.getEstat() == EnumEstats.LOBBY) {
+    			SClobbyChat scLobbyChat = new SClobbyChat();
+    			scLobbyChat.setTexte(texte);
+    			player.playerEmisor.messageEnqueue(scLobbyChat);
+    		}
+    	}
+    	bloqueja.unlock();
 	}
 	
 }

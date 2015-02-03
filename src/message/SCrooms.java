@@ -10,7 +10,7 @@ public class SCrooms implements Serializable,Classe{
 	 * 
 	 */
 	private static final long serialVersionUID = 3839207309625723678L;
-	Classes classe = Classes.Rooms;
+	Classes classe = Classes.SCrooms;
 	
 	public List <SCroom> rooms = new ArrayList<SCroom>();
 	

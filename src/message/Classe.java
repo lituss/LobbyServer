@@ -1,5 +1,5 @@
 package message;
 
 public interface Classe {
- Classes myClass = null;
+ Classes classe = null;
 }

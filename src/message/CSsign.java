@@ -2,7 +2,7 @@ package message;
 
 import java.io.Serializable;
 
-public class CSsign implements Serializable {
+public class CSsign implements Serializable, Classe {
 
 	/**
 	 * 
@@ -11,4 +11,5 @@ public class CSsign implements Serializable {
 	public String user;
 	public String pass;
 
+	Classes classe = Classes.CSsign;
 }
