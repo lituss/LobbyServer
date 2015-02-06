@@ -2,7 +2,7 @@ package message;
 
 import java.io.Serializable;
 
-public class CSlogin implements Serializable, Classe {
+public class CSlogin extends CtipusMissatge implements Serializable {
 
 	/**
 	 * 
@@ -11,5 +11,5 @@ public class CSlogin implements Serializable, Classe {
 public String user;
 public String pass;
 
-Classes classe = Classes.CSlogin;
+public CSlogin(){super(TipusMissatge.CSlogin);}
 }

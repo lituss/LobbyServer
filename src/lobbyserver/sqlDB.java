@@ -43,7 +43,11 @@ boolean existeixUsuari(String user)
 	Statement sentencia = null;
 try {
 	sentencia = conexioDB.createStatement();
-	ResultSet rs = sentencia.executeQuery("SELECT count(*) AS total from jugadors where nom ="+user);
+	String aux = "SELECT count(*) AS total FROM jugadors WHERE nom =\""+user+"\";";
+	//String aux = "SELECT count(*) AS total FROM jugadors WHERE nom = 'sss'";
+	System.out.println("Query : "+aux);
+	//ResultSet rs = sentencia.executeQuery("SELECT count(*) AS total from jugadors where nom ='"+user+"';");
+	ResultSet rs = sentencia.executeQuery(aux);
 	total = rs.getInt("total");
 	}
 	catch (SQLException e){
@@ -65,7 +69,7 @@ boolean login(String user,String pass){
 	if (!existeixUsuari(user)) return false;
 try {
 	sentencia = conexioDB.createStatement();
-	ResultSet rs = sentencia.executeQuery("SELECT clau from jugadors where nom ="+user);
+	ResultSet rs = sentencia.executeQuery("SELECT clau from jugadors where nom =\""+user+"\";");
 	dbpass = rs.getString("clau");
 	}
 	catch (SQLException e){
@@ -85,7 +89,7 @@ boolean join(String user,String pass){
 		if (existeixUsuari(user)) return false;
 	try {
 		sentencia = conexioDB.createStatement();
-		sentencia.executeUpdate("INSERT INTO jugadors (nom,clau) VALUES ("+user+","+pass+");");
+		sentencia.executeUpdate("INSERT INTO jugadors (nom,clau) VALUES (\""+user+"\",\""+pass+"\");");
 		}
 		catch (SQLException e){
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );

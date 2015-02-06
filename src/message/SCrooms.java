@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SCrooms implements Serializable,Classe{
+public class SCrooms extends CtipusMissatge implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3839207309625723678L;
-	Classes classe = Classes.SCrooms;
 	
 	public List <SCroom> rooms = new ArrayList<SCroom>();
 	
@@ -19,6 +18,9 @@ public class SCrooms implements Serializable,Classe{
 		public EnumTipusSales tipusSala;
 		public int maxJugadors;
 		public int numJugadors = 0;
+	}
+	public SCrooms(){
+		super(TipusMissatge.SCrooms);
 	}
 
 }

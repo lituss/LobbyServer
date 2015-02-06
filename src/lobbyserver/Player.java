@@ -11,12 +11,14 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.*;
 
 import message.CSlobbyChat;
-import message.Classes;
+import message.CSlogin;
+import message.CtipusMissatge;
 import message.EnumEstats;
 import message.EnumJoin;
 import message.SClobbyPlayers;
 import message.SClogged;
 import message.SCrooms;
+import message.TipusMissatge;
 
 public class Player {
 	String alias;
@@ -95,10 +97,19 @@ public class Player {
 	}
 	
 	synchronized void tractaMissatge(Object missatge){
-		switch (((Classes)missatge)){
-		case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
-		break;
-		}
+		TipusMissatge tm = null;
+	
+		try{
+    		tm = ((CtipusMissatge) missatge).tipusM;
+    		} catch (ClassCastException e){
+    			System.out.println("Entra brossa al socket"+missatge.toString());
+    			e.printStackTrace();
+    		}
+    		switch (tm) {
+    	
+    			case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
+    			break;
+    		}
 		
 	}
 	public Room getRoom() {

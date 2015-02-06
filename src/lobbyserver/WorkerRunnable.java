@@ -31,10 +31,13 @@ import message.*;
 
 	    public void run() {
 	        try {
+	        	System.out.println("Server :: tenim nou socket (nou client)");
+	        	output = clientSocket.getOutputStream();
+	            objectOutput = new ObjectOutputStream(output);
+	            objectOutput.flush();
 	            input  = clientSocket.getInputStream();
 	            objectInput = new ObjectInputStream(input);
-	            output = clientSocket.getOutputStream();
-	            objectOutput = new ObjectOutputStream(output);
+	            
 	            //estatInicial();
 	            dispatcher();
 	            /*long time = System.currentTimeMillis();
@@ -54,12 +57,25 @@ import message.*;
 	    
 	    void dispatcher() throws ClassNotFoundException, IOException{
 	    	Object aux;
+	    	CSsign prova = new CSsign();
+	    	prova.user = "aaa";
+	    	prova.pass = "bbb";
+	    	//aux = (Object) prova;
+	    	TipusMissatge tm = null;
+	    	
 	    	while (active){
 	    		aux = objectInput.readObject();
-	    		switch (((Classes) aux)){
+	    		try{
+	    		tm = ((CtipusMissatge) aux).tipusM;
+	    		} catch (ClassCastException e){
+	    			System.out.println("Entra brossa al socket"+aux.toString());
+	    			continue;
+	    		}
+	    		switch (tm){
 	    			case  CSlogin : onLogin((CSlogin)aux);
 	    				break;
-	    				
+	    			case CSsign : onJoin(((CSsign)aux));
+	    				break;
 	    		}
 	    	}
 	    }
@@ -114,7 +130,7 @@ import message.*;
 	    	}
 	    	
 	    	else {
-	    		scjoined.join = EnumJoin.KO_BAD_USER.ordinal();
+	    		scjoined.join = EnumJoin.KO_BAD_USER;
 	    	}
 	    	try {
 				objectOutput.writeObject(scjoined);

@@ -80,10 +80,10 @@ public class Lobby {
     public synchronized void broadChat(String texte){
     	// enviem missatge a tots els players que estan al lobby
     	bloqueja.lock();
+    	SClobbyChat scLobbyChat = new SClobbyChat();
+		scLobbyChat.setTexte(texte);
     	for (Player player : players){
     		if (player.getEstat() == EnumEstats.LOBBY) {
-    			SClobbyChat scLobbyChat = new SClobbyChat();
-    			scLobbyChat.setTexte(texte);
     			player.playerEmisor.messageEnqueue(scLobbyChat);
     		}
     	}

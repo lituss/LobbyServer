@@ -2,14 +2,16 @@ package message;
 
 import java.io.Serializable;
 
-public class SClobbyChat implements Serializable, Classe {
+public class SClobbyChat extends CtipusMissatge implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4068826145532356470L;
-	public Classes classe = Classes.SClobbyChat;
+	
 	private String texte;
+	public SClobbyChat(){super(TipusMissatge.SClobbyChat);}
+	
 	public String getTexte() {
 		return texte;
 	}

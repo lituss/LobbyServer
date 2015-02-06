@@ -5,7 +5,7 @@ import java.io.Console;
 public class Server {
 
 	public static Lobby lobby = new Lobby();
-	public static sqlDB sql = new sqlDB();
+	//public static sqlDB sql = new sqlDB();
 	public static final int port = 8889; 
 	
 	public static void main(String[] args) {
@@ -19,6 +19,9 @@ public class Server {
 		//console.flush();
 		System.out.println("New Server online on port : "+port);
 		System.out.flush();
+		//if (lobby.sql.join("aa", "bb")) System.out.println("DB OK");
+		//else System.out.println("DB KO");
+		
 		try {
 		    Thread.sleep(2000 * 1000);
 		} catch (InterruptedException e) {
