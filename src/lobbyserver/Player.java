@@ -15,6 +15,7 @@ import message.CSlogin;
 import message.CtipusMissatge;
 import message.EnumEstats;
 import message.EnumJoin;
+import message.EnumTipusPlayer;
 import message.SClobbyPlayers;
 import message.SClogged;
 import message.SCrooms;
@@ -23,6 +24,14 @@ import message.TipusMissatge;
 public class Player {
 	String alias;
 	private EnumEstats estat;
+	private EnumTipusPlayer tipus;
+	public EnumTipusPlayer getTipus() {
+		return tipus;
+	}
+	public void setTipus(EnumTipusPlayer tipus) {
+		this.tipus = tipus;
+	}
+	private long saldo;
 	private Room room = null;
 	private Joc joc = null;
 	PlayerEmisor playerEmisor;
@@ -146,4 +155,10 @@ public class Player {
     		}
     	return valor;
 		}
+	public long getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(long saldo) {
+		this.saldo = saldo;
+	}
 }
