@@ -105,12 +105,15 @@ public class Player {
     			System.out.println("Entra brossa al socket"+missatge.toString());
     			e.printStackTrace();
     		}
-    		switch (tm) {
-    	
-    			case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
-    			break;
-    		}
+		switch (estat) {
+			case LOBBY :{
+				switch(tm) {
 		
+    		    			case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
+    		    			break;
+				}
+    		}
+    	}
 	}
 	public Room getRoom() {
 		return room;
@@ -142,7 +145,5 @@ public class Player {
     		tokens.put(valor, this);
     		}
     	return valor;
-    
 		}
-	
 }
