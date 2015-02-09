@@ -13,6 +13,10 @@ public class SiM extends Joc {
 	SiMplayer torn;
 	SiMplayer banca;
 	
+	public SiMplayer getSiMplayer(Player player){
+		return (simPlayers.get(simPlayers.indexOf(player)));
+		}
+	
 	@Override
 	public void inicia() {
 		// TODO Auto-generated method stub
@@ -26,7 +30,8 @@ public class SiM extends Joc {
 						simPlayers.add(new SiMplayer(auxPlayer));
 					}
 		}
-		banca = simPlayers.get((int)Math.round(Math.random()*simPlayers.size()));
+		//banca = simPlayers.get((int)Math.round(Math.random()*simPlayers.size()));
+		banca = enviaSorteigBanca();
 		torn = banca.next();
 		enviaBanca();
 
@@ -37,14 +42,16 @@ public class SiM extends Joc {
 		enviaTorn();
 		
 	}
-	static public SiMplayer getSiMplayer(Player player){
-		
-	}
+	
+		//for (SiMplayer auxSiM : )
 	void enviaBanca(){
 		
 	}
 	void enviaTorn(){
 		
+	}
+	SiMplayer enviaSorteigBanca(){
+		return torn; // canviar!!! perque no doni error
 	}
 	void enviaCarta(SiMplayer player, Carta carta){
 		// enviem a tots , a player destapada
@@ -89,6 +96,8 @@ public class SiM extends Joc {
 		if (torn == banca.next()) finalPartida();
 		enviaTorn();
 	}
+	
+
 	
 	/* -----------------------------------
 	 * 

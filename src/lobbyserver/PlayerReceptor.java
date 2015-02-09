@@ -2,8 +2,11 @@ package lobbyserver;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayerReceptor implements Runnable {
+	private BlockingQueue <Object> missatgesEntrants = new LinkedBlockingQueue <Object>();
 	private ObjectInputStream objectInput;
 	private Player player;
 	//private Boolean interruption = false;
@@ -12,7 +15,14 @@ public class PlayerReceptor implements Runnable {
 		this.objectInput = objectInput;
 		this.player = player;
 	}
-
+	synchronized void messageEnqueue(Object missatge){
+		missatgesEntrants.add(missatge);
+		player.notify();
+	}
+	
+	public BlockingQueue <Object> getMissatgesEntrants(){
+		return missatgesEntrants;
+	}
 	@Override
 	public void run() {
 		Thread thread = Thread.currentThread();
@@ -22,7 +32,9 @@ public class PlayerReceptor implements Runnable {
 	               Object missatge = objectInput.readObject();
 	               if (missatge == null)
 	                   break;
-	               player.tractaMissatge(missatge);
+	               
+	               messageEnqueue(missatge);
+	               //player.tractaMissatge(missatge);
 	           }
 	        } catch (IOException ioex) {
 	           // Problem reading from socket (communication is broken)

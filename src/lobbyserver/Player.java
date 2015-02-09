@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.*;
@@ -44,6 +45,8 @@ public class Player {
 	static Lock bloqueja;
 	long token;
 	static ConcurrentMap<Long,Player> tokens = new ConcurrentHashMap<Long,Player>();
+	private BlockingQueue <Object> missatgesEntrants;
+	private boolean actiu;
 	
 	
 	public String getAlias() {
@@ -64,14 +67,24 @@ public class Player {
 		enviaLogin();
 		lobby.addPlayer(this);
 		setEstat(EnumEstats.LOBBY);
+		missatgesEntrants = playerReceptor.getMissatgesEntrants();
+		actiu = true;
+		while (actiu) tractaMissatge(messageDequeue());
+	}
+	
+	private synchronized Object messageDequeue(){
+		Object aux;
 		
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		while(missatgesEntrants.size()==0 )
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		if (!actiu) return null;
+		aux = missatgesEntrants.remove();
+		return aux;
 	}
 	
 	private void enviaLogin(){
@@ -108,6 +121,7 @@ public class Player {
 	synchronized void tractaMissatge(Object missatge){
 		TipusMissatge tm = null;
 	
+		if (!actiu) return;
 		try{
     		tm = ((CtipusMissatge) missatge).tipusM;
     		} catch (ClassCastException e){
@@ -139,6 +153,7 @@ public class Player {
 	public synchronized void interrupt (){
 		threadPlayerEmisor.interrupt();
 		threadPlayerReceptor.interrupt();
+		actiu = false;
 		
 		lobby.removePlayer(this);
 		if (room != null) room.playerRemove(this);
