@@ -12,6 +12,7 @@ public class SiM extends Joc {
 	ArrayList <SiMplayer> simPlayers = new ArrayList<SiMplayer>();
 	SiMplayer torn;
 	SiMplayer banca;
+	int apostaMinima,apostaMaxima;
 	
 	public SiMplayer getSiMplayer(Player player){
 		return (simPlayers.get(simPlayers.indexOf(player)));
@@ -26,7 +27,7 @@ public class SiM extends Joc {
 		
 		for (Player auxPlayer : players){
 			if (auxPlayer.getTipus() == (EnumTipusPlayer.HUMAN ) ||
-					(auxPlayer.getTipus() == EnumTipusPlayer.BOT)){
+					auxPlayer.getTipus() == EnumTipusPlayer.BOT) {
 						simPlayers.add(new SiMplayer(auxPlayer));
 					}
 		}
@@ -109,6 +110,7 @@ public class SiM extends Joc {
 		List <Carta> cartes;
 		int aposta;
 		boolean capTapada = false;
+		boolean passa = false;
 		
 		public SiMplayer(Player auxPlayer) {
 			// TODO Auto-generated constructor stub
