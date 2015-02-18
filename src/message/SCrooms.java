@@ -18,6 +18,7 @@ public class SCrooms extends CtipusMissatge implements Serializable{
 		public EnumTipusSales tipusSala;
 		public int maxJugadors;
 		public int numJugadors = 0;
+		public int id;
 	}
 	public SCrooms(){
 		super(TipusMissatge.SCrooms);

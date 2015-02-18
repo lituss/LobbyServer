@@ -89,5 +89,13 @@ public class Lobby {
     	}
     	bloqueja.unlock();
 	}
+    public synchronized Room getRoomId(int roomId){
+    	for (Room auxRoom : rooms){
+    		if (auxRoom.getId() == roomId) return auxRoom;
+    	}
+    	System.out.println("Room no torvada");
+    	System.exit(0);
+    	return null;
+    }
 	
 }

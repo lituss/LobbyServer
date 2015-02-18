@@ -1,6 +1,7 @@
 package lobbyserver;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -26,6 +27,6 @@ public synchronized void playerAdd(Player player, EnumTipusPlayer tipus){
 }
 public abstract void inicia();
 protected void enviaTorn(Player player){
-	
+
 }
 }
