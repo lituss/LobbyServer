@@ -7,8 +7,8 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
-import message.EnumEstats;
-import message.EnumTipusSales;
+import message.enums.EnumEstats;
+import message.enums.EnumTipusSales;
 import message.SClobbyChat;
 
 

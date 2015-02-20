@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.io.*;
 
 import message.*;
+import message.enums.EnumEstats;
+import message.enums.EnumJoin;
+import message.enums.TipusMissatge;
 
 
 	public class WorkerRunnable implements Runnable{

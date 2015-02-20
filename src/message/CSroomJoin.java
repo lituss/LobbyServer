@@ -2,6 +2,8 @@ package message;
 
 import java.io.Serializable;
 
+import message.enums.TipusMissatge;
+
 public class CSroomJoin extends CtipusMissatge implements Serializable{
 	private static final long serialVersionUID = -5383728769342092191L;
 	private int id;

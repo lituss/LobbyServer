@@ -2,6 +2,10 @@ package message;
 
 import java.io.Serializable;
 
+import message.enums.EnumEstats;
+import message.enums.EnumTipusPlayer;
+import message.enums.TipusMissatge;
+
 public class SCplayer extends CtipusMissatge implements Serializable  {
 	public String alias;
 	public long token;

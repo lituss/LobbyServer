@@ -2,6 +2,8 @@ package message;
 
 import java.io.Serializable;
 
+import message.enums.TipusMissatge;
+
 public class CSlogin extends CtipusMissatge implements Serializable {
 
 	/**

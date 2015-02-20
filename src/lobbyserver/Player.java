@@ -12,17 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.*;
 
+import jocs.SiM;
 import message.CSlobbyChat;
 import message.CSlogin;
 import message.CSroomJoin;
 import message.CtipusMissatge;
-import message.EnumEstats;
-import message.EnumJoin;
-import message.EnumTipusPlayer;
 import message.SClobbyPlayers;
 import message.SClogged;
 import message.SCrooms;
-import message.TipusMissatge;
+import message.enums.*;
+import message.games.CSgameCreate;
+import message.games.CSgameJoin;
+import message.games.SCgameCreated;
+import message.games.SCgameJoined;
 
 public class Player implements Serializable{
 	/**
@@ -143,9 +145,17 @@ public class Player implements Serializable{
     		    	break;
     		    	case CSroomJoin : joinRoom((CSroomJoin) missatge);
 				}
-    		}
-    	}
+			}
+				case ROOM : {
+					switch(tm) {
+					case CSgameCreate : createGame((CSgameCreate) missatge);
+					break;
+					case CSgameJoin : joinGame((CSgameJoin) missatge);
+					}
+				}
+		}
 	}
+	
 	public Room getRoom() {
 		return room;
 	}
@@ -199,4 +209,34 @@ public class Player implements Serializable{
 		//send games
 		estat = EnumEstats.ROOM;
 	}
+	public void createGame(CSgameCreate gc){
+		switch (room.tipusSala) {
+		case Domino:
+			break;
+		case Kiriki:
+			break;
+		case SetIMig:
+			SiM auxJoc= new SiM();
+			room.addJoc(auxJoc);
+			auxJoc.playerAdd(this, tipus);
+			SCgameCreated aux = new SCgameCreated();
+			aux.id = auxJoc.id;
+			playerEmisor.messageEnqueue(auxJoc);
+			joc = auxJoc;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public synchronized void joinGame(CSgameJoin gj){
+		for (Joc auxJoc : room.jocs ){
+			if (auxJoc.id == gj.id){
+				auxJoc.playerAdd(this, getTipus());
+				SCgameJoined pj = new SCgameJoined();
+				playerEmisor.messageEnqueue(pj);
+				break;
+			}
+		}
+}
 }

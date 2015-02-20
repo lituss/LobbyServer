@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import message.enums.EnumTipusSales;
+import message.enums.TipusMissatge;
+
 public class SCrooms extends CtipusMissatge implements Serializable{
 
 	/**

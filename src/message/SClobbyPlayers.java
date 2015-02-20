@@ -3,6 +3,8 @@ package message;
 import java.io.Serializable;
 import java.util.List;
 
+import message.enums.TipusMissatge;
+
 public class SClobbyPlayers extends CtipusMissatge implements Serializable{
 
 	/**

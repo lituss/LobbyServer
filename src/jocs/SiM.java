@@ -5,7 +5,7 @@ import java.util.List;
 
 import lobbyserver.Joc;
 import lobbyserver.Player;
-import message.EnumTipusPlayer;
+import message.enums.EnumTipusPlayer;
 
 public class SiM extends Joc {
 	Cartes40 cartes = new Cartes40();

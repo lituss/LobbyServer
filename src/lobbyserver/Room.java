@@ -3,7 +3,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.*;
 
-import message.EnumTipusSales;
+import message.enums.EnumTipusSales;
+import message.SCgame;
 import message.SCplayer;
 import message.SCroomGames;
 
@@ -85,6 +86,11 @@ public class Room {
 		}
 		return llista;
 	}
+	public synchronized List<SCgame> jocList(){
+		List <SCgame> llista = new LinkedList<>();
+		for (Joc joc : jocs) llista.add(joc.pack());
+		return llista;
+	}
 	public synchronized void addJoc(Joc joc){
 		jocs.add(joc);
 	}
@@ -96,6 +102,7 @@ public class Room {
 		packet.maxJugadors = maxJugadors;
 		packet.nom = nom;
 		packet.players = playerList();
+		packet.jocs = jocList();
 		packet.tipusSala = tipusSala;
 		return (packet);
 	}
