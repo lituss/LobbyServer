@@ -30,6 +30,15 @@ public synchronized void playerAdd(Player player, EnumTipusPlayer tipus){
 	players.add(player);
 	nPlayers++;
 	lock.unlock();
+	if (nPlayers == maxPlayers) inicia();
+}
+public synchronized void startPlay(){
+	if (nPlayers >= minPlayers) inicia();
+}
+public synchronized void broadcast(Object object){
+	for (Player player : players){
+		player.playerEmisor.messageEnqueue(object);
+	}
 }
 public abstract void inicia();
 protected void enviaTorn(Player player){

@@ -221,7 +221,7 @@ public class Player implements Serializable{
 			auxJoc.playerAdd(this, tipus);
 			SCgameCreated aux = new SCgameCreated();
 			aux.id = auxJoc.id;
-			playerEmisor.messageEnqueue(auxJoc);
+			playerEmisor.messageEnqueue(aux);
 			joc = auxJoc;
 			break;
 		default:
