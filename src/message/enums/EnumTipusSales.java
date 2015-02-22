@@ -1,4 +1,4 @@
-package message;
+package message.enums;
 
 public enum EnumTipusSales {SetIMig(1),Kiriki(2),Domino(3);
 

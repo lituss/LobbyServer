@@ -5,24 +5,32 @@ package lobbyserver;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.*;
 
+import jocs.SiM;
 import message.CSlobbyChat;
 import message.CSlogin;
+import message.CSroomJoin;
 import message.CtipusMissatge;
-import message.EnumEstats;
-import message.EnumJoin;
-import message.EnumTipusPlayer;
 import message.SClobbyPlayers;
 import message.SClogged;
 import message.SCrooms;
-import message.TipusMissatge;
+import message.enums.*;
+import message.games.CSgameCreate;
+import message.games.CSgameJoin;
+import message.games.SCgameCreated;
+import message.games.SCgameJoined;
 
-public class Player {
+public class Player implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4193707829339019979L;
 	String alias;
 	private EnumEstats estat;
 	private EnumTipusPlayer tipus;
@@ -32,21 +40,21 @@ public class Player {
 	public void setTipus(EnumTipusPlayer tipus) {
 		this.tipus = tipus;
 	}
-	private long saldo;
+	transient private long saldo;
 	private Room room = null;
 	private Joc joc = null;
-	PlayerEmisor playerEmisor;
-	Thread threadPlayerEmisor;
-	public PlayerReceptor playerReceptor;
-	public Thread threadPlayerReceptor;
-	private ObjectOutputStream objectOutput;
-	private ObjectInputStream objectInput;
-	Lobby lobby;
-	static Lock bloqueja;
+	transient PlayerEmisor playerEmisor;
+	transient Thread threadPlayerEmisor;
+	transient public PlayerReceptor playerReceptor;
+	transient public Thread threadPlayerReceptor;
+	transient private ObjectOutputStream objectOutput;
+	transient private ObjectInputStream objectInput;
+	transient Lobby lobby;
+	transient static Lock bloqueja;
 	long token;
-	static ConcurrentMap<Long,Player> tokens = new ConcurrentHashMap<Long,Player>();
-	private BlockingQueue <Object> missatgesEntrants;
-	private boolean actiu;
+	transient static ConcurrentMap<Long,Player> tokens = new ConcurrentHashMap<Long,Player>();
+	transient private BlockingQueue <Object> missatgesEntrants;
+	transient private boolean actiu;
 	
 	
 	public String getAlias() {
@@ -102,6 +110,7 @@ public class Player {
 			auxSCroom.numJugadors = auxRoom.getNumJugadors();
 			auxSCroom.tipusSala = auxRoom.getTipusSala();
 			auxSCroom.maxJugadors = auxRoom.getMaxJugadors();
+			auxSCroom.id = auxRoom.getId();
 			scrooms.rooms.add(auxSCroom);
 		}
 		SClobbyPlayers sclobbyPlayers = new SClobbyPlayers();
@@ -132,17 +141,35 @@ public class Player {
 			case LOBBY :{
 				switch(tm) {
 		
-    		    			case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
-    		    			break;
+    		    	case CSlobbyChat : lobby.broadChat(((CSlobbyChat) missatge).getTexte());
+    		    	break;
+    		    	case CSroomJoin : joinRoom((CSroomJoin) missatge);
 				}
-    		}
-    	}
+			}
+				case ROOM : {
+					switch(tm) {
+					case CSgameCreate : createGame((CSgameCreate) missatge);
+					break;
+					case CSgameJoin : joinGame((CSgameJoin) missatge);
+					}
+				}
+		}
 	}
+	
 	public Room getRoom() {
 		return room;
 	}
-	public void setRoom(Room room) {
-		this.room = room;
+	public synchronized void setRoom(Room room) {
+		if (room != null){
+			this.room = room;
+			room.numJugadors++;
+			room.playerAdd(this);
+		}
+		else{
+			this.room.numJugadors--;
+			this.room.playerRemove(this);
+			this.room = null;
+	}
 	}
 	public EnumEstats getEstat() {
 		return estat;
@@ -176,4 +203,40 @@ public class Player {
 	public void setSaldo(long saldo) {
 		this.saldo = saldo;
 	}
+	public synchronized void joinRoom(CSroomJoin auxRoom){
+		setRoom(lobby.getRoomId(auxRoom.getId()));
+		//send players
+		//send games
+		estat = EnumEstats.ROOM;
+	}
+	public void createGame(CSgameCreate gc){
+		switch (room.tipusSala) {
+		case Domino:
+			break;
+		case Kiriki:
+			break;
+		case SetIMig:
+			SiM auxJoc= new SiM();
+			room.addJoc(auxJoc);
+			auxJoc.playerAdd(this, tipus);
+			SCgameCreated aux = new SCgameCreated();
+			aux.id = auxJoc.id;
+			playerEmisor.messageEnqueue(aux);
+			joc = auxJoc;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public synchronized void joinGame(CSgameJoin gj){
+		for (Joc auxJoc : room.jocs ){
+			if (auxJoc.id == gj.id){
+				auxJoc.playerAdd(this, getTipus());
+				SCgameJoined pj = new SCgameJoined();
+				playerEmisor.messageEnqueue(pj);
+				break;
+			}
+		}
+}
 }

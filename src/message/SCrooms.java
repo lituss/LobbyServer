@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import message.enums.EnumTipusSales;
+import message.enums.TipusMissatge;
+
 public class SCrooms extends CtipusMissatge implements Serializable{
 
 	/**
@@ -18,6 +21,7 @@ public class SCrooms extends CtipusMissatge implements Serializable{
 		public EnumTipusSales tipusSala;
 		public int maxJugadors;
 		public int numJugadors = 0;
+		public int id;
 	}
 	public SCrooms(){
 		super(TipusMissatge.SCrooms);

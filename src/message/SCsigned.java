@@ -2,6 +2,9 @@ package message;
 
 import java.io.Serializable;
 
+import message.enums.EnumJoin;
+import message.enums.TipusMissatge;
+
 public class SCsigned extends CtipusMissatge implements Serializable {
 
 	/**

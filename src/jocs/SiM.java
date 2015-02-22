@@ -1,17 +1,26 @@
 package jocs;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import lobbyserver.Joc;
 import lobbyserver.Player;
-import message.EnumTipusPlayer;
+import message.enums.EnumEstatJoc;
+import message.enums.EnumTipusPlayer;
+import message.games.SiM.CSSiMJugada;
+import message.games.SiM.SCSiMPlayers;
+import message.games.SiM.SCSiMTorn;
+import message.utils.CircularDoubleLinkedList;
 
 public class SiM extends Joc {
 	Cartes40 cartes = new Cartes40();
-	ArrayList <SiMplayer> simPlayers = new ArrayList<SiMplayer>();
-	SiMplayer torn;
+	List<SiMplayer> simPlayers = new ArrayList<SiMplayer>();
+	SiMplayer ma;
 	SiMplayer banca;
+	SiMplayer torn;
+	int apostaMinima,apostaMaxima;
+	boolean primeraMa = true;
 	
 	public SiMplayer getSiMplayer(Player player){
 		return (simPlayers.get(simPlayers.indexOf(player)));
@@ -24,30 +33,43 @@ public class SiM extends Joc {
 		// sortegem torn inicial (banca)
 		// repartim 
 		
+	
 		for (Player auxPlayer : players){
 			if (auxPlayer.getTipus() == (EnumTipusPlayer.HUMAN ) ||
-					(auxPlayer.getTipus() == EnumTipusPlayer.BOT)){
+					auxPlayer.getTipus() == EnumTipusPlayer.BOT) {
 						simPlayers.add(new SiMplayer(auxPlayer));
 					}
 		}
-		//banca = simPlayers.get((int)Math.round(Math.random()*simPlayers.size()));
-		banca = enviaSorteigBanca();
-		torn = banca.next();
-		enviaBanca();
-
+		if (simPlayers.size() < minPlayers) {
+			estat = EnumEstatJoc.wait;
+			return ;
+		}
+		if (primeraMa){
+			estat = EnumEstatJoc.play;
+			//banca = simPlayers.get((int)Math.round(Math.random()*simPlayers.size()));
+			banca = null;
+			while ((banca = enviaSorteigBanca()) != null);
+			ma = banca.next();
+			torn = ma;
+		}
+		enviaJugadors();
 		reparteix();
-		
-		
-		
 		enviaTorn();
 		
 	}
 	
-		//for (SiMplayer auxSiM : )
-	void enviaBanca(){
-		
+	void enviaJugadors(){
+		SCSiMPlayers sc = new SCSiMPlayers();
+		sc.SiMplayers = simPlayers;
+		sc.banca = banca;
+		broadcast(sc);
 	}
+	
 	void enviaTorn(){
+		SCSiMTorn scTorn = new SCSiMTorn();
+		scTorn.torn = torn.player;
+		broadcast(scTorn);
+	
 		
 	}
 	SiMplayer enviaSorteigBanca(){
@@ -63,52 +85,54 @@ public class SiM extends Joc {
 		
 	}
 	void reparteix(){
-		SiMplayer player = torn;
+		SiMplayer player = ma;
 		Carta carta;
+		cartes.reset();
 		
 		do{
 			carta = cartes.get();
 			player.cartes.add(carta);
 			enviaCarta(player,carta);
 			player = player.next();
-		} while (player != torn);
+		} while (player != ma);
+		
+	}
+	void enviaRecullirCartes(){
 		
 	}
 	
 	void finalPartida(){
-		//destapar , saldar , començar seguent ma
+		//destapar , saldar , veure si hi ha canvi jugador banca, començar seguent ma
+		Player novaBanca = null;
+	}
+	
+	void passaTorn(){
+		torn = torn.next();
+		if (torn == ma) finalPartida();
 	}
 	/* metodes cridats desde el client
 	 * 
 	 */
-	void rebAposta(int aposta,Player player){
+	
+	void rebJoc (Player player,CSSiMJugada jugada){
 		SiMplayer sim = getSiMplayer(player);
-		if (player.getSaldo() - aposta < 0) enviaErrorAposta(player);
-		player.setSaldo(player.getSaldo() - aposta);
-		sim.aposta+=aposta;
-	}
-	void rebDemanaCarta(boolean tapada, Player player){
-		
-	}
-	void rebPlanta(Player player){
-		torn = torn.next();
-		if (torn == banca) enviaDestapa(torn);
-		if (torn == banca.next()) finalPartida();
-		enviaTorn();
+		player.setSaldo(player.getSaldo() - jugada.aposta);
+		sim.incAposta(jugada.aposta);
+		if (jugada.passa) passaTorn();
 	}
 	
-
-	
+			
 	/* -----------------------------------
 	 * 
 	 */
 	
 	public class SiMplayer {
 
-		Player player;
+		public Player player;
 		List <Carta> cartes;
 		int aposta;
 		boolean capTapada = false;
+		boolean passa = false;
 		
 		public SiMplayer(Player auxPlayer) {
 			// TODO Auto-generated constructor stub
@@ -118,6 +142,9 @@ public class SiM extends Joc {
 			int index = simPlayers.indexOf(this);
 			if (++index > simPlayers.size()) index = 0;
 			return simPlayers.get(index);
+		}
+		public void incAposta(int aposta){
+			this.aposta+=aposta;
 		}
 		
 	}

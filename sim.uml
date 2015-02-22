@@ -1,2 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XVfVgLCkEeSnBvfHflGFUg" name="NewModel"/>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XVfVgLCkEeSnBvfHflGFUg" name="NewModel">
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_SvZ98Lh1EeSxdqFDbPDGew" name="NewModel statemachine">
+    <region xmi:id="_SvZ98bh1EeSxdqFDbPDGew" name="Region1">
+      <transition xmi:id="_cNmWsLh1EeSxdqFDbPDGew" name="Transition_Initial1ToState1" guard="_gjsNMLh1EeSxdqFDbPDGew" source="_V7FPwLh1EeSxdqFDbPDGew" target="_XavEoLh1EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_gjsNMLh1EeSxdqFDbPDGew" name="Transition_Initial1ToState1_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_gjsNMbh1EeSxdqFDbPDGew" name="Transition_Initial1ToState1_guard">
+            <body>createGame()</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_n1PIMLh1EeSxdqFDbPDGew" name="Transition_wait PlayersTowait Players" guard="_pfJsULh1EeSxdqFDbPDGew" source="_XavEoLh1EeSxdqFDbPDGew" target="_XavEoLh1EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_pfJsULh1EeSxdqFDbPDGew" name="Transition_wait PlayersTowait Players_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_pfJsUbh1EeSxdqFDbPDGew" name="Transition_wait PlayersTowait Players_guard">
+            <body>JoinGame</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_6mdykLh1EeSxdqFDbPDGew" name="Transition_wait PlayersToChoice2" source="_XavEoLh1EeSxdqFDbPDGew" target="_5PzhoLh1EeSxdqFDbPDGew"/>
+      <transition xmi:id="_WAmzgLh2EeSxdqFDbPDGew" name="start()" guard="_gdrPULh2EeSxdqFDbPDGew" source="_5PzhoLh1EeSxdqFDbPDGew" target="_UQKwoLh2EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_gdrPULh2EeSxdqFDbPDGew" name="start()_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_gdrPUbh2EeSxdqFDbPDGew" name="start()_guard">
+            <body>Start</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_qnG9cLh2EeSxdqFDbPDGew" name="Transition_iniciToState3" guard="_uSEMQLh2EeSxdqFDbPDGew" source="_UQKwoLh2EeSxdqFDbPDGew" target="_pq8QILh2EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_uSEMQLh2EeSxdqFDbPDGew" name="Transition_iniciToState3_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_uSEMQbh2EeSxdqFDbPDGew" name="Transition_iniciToState3_guard">
+            <body>sorteigBanca()</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_28SxcLh2EeSxdqFDbPDGew" name="Transition_BancaToState4" guard="_5p180Lh2EeSxdqFDbPDGew" source="_pq8QILh2EeSxdqFDbPDGew" target="_wlXEkLh2EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_5p180Lh2EeSxdqFDbPDGew" name="Transition_BancaToState4_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5p180bh2EeSxdqFDbPDGew" name="Transition_BancaToState4_guard">
+            <body>repartir()</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_ST6p4Lh3EeSxdqFDbPDGew" name="Transition_jugadorToState5" guard="_ab_kQLh3EeSxdqFDbPDGew" source="_wlXEkLh2EeSxdqFDbPDGew" target="_NfbAILh3EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_ab_kQLh3EeSxdqFDbPDGew" name="Transition_jugadorToState5_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_ab_kQbh3EeSxdqFDbPDGew" name="Transition_jugadorToState5_guard">
+            <body>nova(tapada)</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_dcaoULh3EeSxdqFDbPDGew" name="Transition_jugadorToState6" guard="_g-JpsLh3EeSxdqFDbPDGew" source="_wlXEkLh2EeSxdqFDbPDGew" target="_QbGHELh3EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_g-JpsLh3EeSxdqFDbPDGew" name="Transition_jugadorToState6_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_g-Jpsbh3EeSxdqFDbPDGew" name="Transition_jugadorToState6_guard">
+            <body>planto(passa)</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_o4x98Lh3EeSxdqFDbPDGew" name="Transition_State5Tojugador" guard="_rn2zULh3EeSxdqFDbPDGew" source="_NfbAILh3EeSxdqFDbPDGew" target="_wlXEkLh2EeSxdqFDbPDGew">
+        <ownedRule xmi:id="_rn2zULh3EeSxdqFDbPDGew" name="Transition_State5Tojugador_transition">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_rn2zUbh3EeSxdqFDbPDGew" name="Transition_State5Tojugador_guard">
+            <body>reparteix</body>
+          </specification>
+        </ownedRule>
+      </transition>
+      <transition xmi:id="_IzHzoLh4EeSxdqFDbPDGew" name="Transition_State6ToChoice3" source="_QbGHELh3EeSxdqFDbPDGew" target="_GUCiELh4EeSxdqFDbPDGew"/>
+      <transition xmi:id="_KhmHoLh4EeSxdqFDbPDGew" name="Transition_Choice3Tojugador" source="_GUCiELh4EeSxdqFDbPDGew" target="_wlXEkLh2EeSxdqFDbPDGew"/>
+      <transition xmi:id="_ceKa4Lh4EeSxdqFDbPDGew" name="Transition_evaluaJugadesToChoice4" source="_VEjwELh4EeSxdqFDbPDGew" target="_bb5FkLh4EeSxdqFDbPDGew"/>
+      <transition xmi:id="_qIYvMLh4EeSxdqFDbPDGew" name="Transition_mesJugadorsToevaluaJugades" source="_GUCiELh4EeSxdqFDbPDGew" target="_VEjwELh4EeSxdqFDbPDGew"/>
+      <transition xmi:id="_f4wcALiEEeSxdqFDbPDGew" name="Transition_Choice4Toinici" source="_bb5FkLh4EeSxdqFDbPDGew" target="_UQKwoLh2EeSxdqFDbPDGew"/>
+      <transition xmi:id="_n-z9ILiEEeSxdqFDbPDGew" name="Transition_Choice4ToFinalState1" source="_bb5FkLh4EeSxdqFDbPDGew" target="_SGov8LiEEeSxdqFDbPDGew"/>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_V7FPwLh1EeSxdqFDbPDGew" name="Initial1"/>
+      <subvertex xmi:type="uml:State" xmi:id="_XavEoLh1EeSxdqFDbPDGew" name="wait Players"/>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_5PzhoLh1EeSxdqFDbPDGew" name="Full" kind="choice"/>
+      <subvertex xmi:type="uml:State" xmi:id="_UQKwoLh2EeSxdqFDbPDGew" name="inici"/>
+      <subvertex xmi:type="uml:State" xmi:id="_pq8QILh2EeSxdqFDbPDGew" name="Banca"/>
+      <subvertex xmi:type="uml:State" xmi:id="_wlXEkLh2EeSxdqFDbPDGew" name="jugador"/>
+      <subvertex xmi:type="uml:State" xmi:id="_NfbAILh3EeSxdqFDbPDGew" name="State5"/>
+      <subvertex xmi:type="uml:State" xmi:id="_QbGHELh3EeSxdqFDbPDGew" name="State6"/>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_GUCiELh4EeSxdqFDbPDGew" name="mesJugadors" kind="choice"/>
+      <subvertex xmi:type="uml:State" xmi:id="_VEjwELh4EeSxdqFDbPDGew" name="evaluaJugades"/>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_bb5FkLh4EeSxdqFDbPDGew" name="Choice4" kind="choice"/>
+      <subvertex xmi:type="uml:FinalState" xmi:id="_SGov8LiEEeSxdqFDbPDGew" name="FinalState1"/>
+    </region>
+  </packagedElement>
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_F9TvALh2EeSxdqFDbPDGew" name="StateMachine2"/>
+</uml:Model>

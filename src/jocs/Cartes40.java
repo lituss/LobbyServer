@@ -3,9 +3,9 @@ package jocs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cartes40 {
-	List <Carta> cartes = new ArrayList<Carta>(40);
-	List <Carta> munt = new ArrayList<Carta>();
+public class Cartes40 implements Cloneable{
+	protected List <Carta> cartes = new ArrayList<Carta>(40);
+	protected List <Carta> munt = new ArrayList<Carta>();
 
 	public Cartes40(){
 		int contador = 0;
@@ -24,5 +24,15 @@ public class Cartes40 {
 	public void reset(){
 		munt.clear();
 		munt.addAll(cartes);
+	}
+	public int size(){ return munt.size();}
+	
+	@Override
+	protected Cartes40 clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		Cartes40 auxCartes = new Cartes40();
+		auxCartes.cartes.addAll(cartes);
+		auxCartes.munt.addAll(cartes);
+		return auxCartes;
 	}
 }
